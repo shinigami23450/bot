@@ -5,12 +5,11 @@ TARGET_ID = 1414933285  # сюда вставь свой Telegram ID
 
 bot = telebot.TeleBot(TOKEN)
 
-@bot.message_handler(commands=["id"])
+@bot.message_handler(commands=["ids"])
 def get_id(message):
     bot.reply_to(message, f"Твой ID: {message.from_user.id}")
 
 
-# Пересылка любых сообщений
 @bot.message_handler(func=lambda message: True, content_types=[
     "text", "photo", "video", "document", "audio",
     "voice", "sticker", "location", "contact"
@@ -25,10 +24,8 @@ def forward_all(message):
     except Exception as e:
         print(e)
 
-#git init
-git add .
-git commit -m "first bot"
-git branch -M main
-git remote add origin ТВОЯ_ССЫЛКА_НА_РЕПО
-git push -u origin main
+
+def f():
+    pass
+
 bot.infinity_polling()
