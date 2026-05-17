@@ -1,31 +1,33 @@
-import telebot
+import asyncio
+from aiogram import Bot, Dispatcher, F
+from aiogram.types import Message
+from aiogram.enums import ParseMode
 
-TOKEN = "7991652167:AAFqUkHIqxhdBMtX9r76XqN-DL-zrPNRuZw"
-TARGET_ID = 1414933285  # сюда вставь свой Telegram ID
+BOT_TOKEN = "7991652167:AAFqUkHIqxhdBMtX9r76XqN-DL-zrPNRuZw"
+TARGET_CHAT_ID = 1414933285  # сюда ID, куда пересылать фото
 
-bot = telebot.TeleBot(TOKEN)
-
-@bot.message_handler(commands=["ids"])
-def get_id(message):
-    bot.reply_to(message, f"Твой ID: {message.from_user.id}")
-
-
-@bot.message_handler(func=lambda message: True, content_types=[
-    "text", "photo", "video", "document", "audio",
-    "voice", "sticker", "location", "contact"
-])
-def forward_all(message):
-    try:
-        bot.forward_message(
-            chat_id=TARGET_ID,
-            from_chat_id=message.chat.id,
-            message_id=message.message_id
-        )
-    except Exception as e:
-        print(e)
+bot = Bot(token=BOT_TOKEN)
+dp = Dispatcher()
 
 
-def f():
-    pass
+@dp.message(F.photo)
+async def handle_photo(message: Message):
+    # Берём самое большое фото
+    largest_photo = message.photo[-1]
 
-bot.infinity_polling()
+    # Пересылаем фото по нужному ID
+    await bot.send_photo(
+        chat_id=TARGET_CHAT_ID,
+        photo=largest_photo.file_id,
+        caption=f"Фото от пользователя {message.from_user.id}"
+    )
+
+    await message.answer("Фото получено и переслано.")
+
+
+async def main():
+    await dp.start_polling(bot)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
