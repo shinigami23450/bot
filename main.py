@@ -4,7 +4,7 @@ from aiogram.types import Message
 from aiogram.enums import ParseMode
 
 BOT_TOKEN = "7991652167:AAFqUkHIqxhdBMtX9r76XqN-DL-zrPNRuZw"
-TARGET_CHAT_ID = 1414933285  # сюда ID, куда пересылать фото
+TARGET_CHAT_ID = 1234567890  # сюда ID, куда пересылать фото
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
